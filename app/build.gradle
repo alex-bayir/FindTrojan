@@ -1,0 +1,49 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.alex.findtrojan'
+    compileSdk 33
+
+    dataBinding {
+        enabled true
+    }
+    defaultConfig {
+        applicationId "com.alex.findtrojan"
+        minSdk 26
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_9
+        targetCompatibility JavaVersion.VERSION_1_9
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+dependencies {
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'net.dongliu:apk-parser:2.6.5'
+    implementation 'com.github.angads25:filepicker:1.1.1'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.5'
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+    testImplementation 'org.jsoup:jsoup:1.15.3'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'junit:junit:4.13.2'
+    testImplementation 'net.lingala.zip4j:zip4j:2.11.2'
+    testImplementation 'com.eclipsesource.minimal-json:minimal-json:0.9.5'
+}
