@@ -8,7 +8,6 @@ import com.eclipsesource.json.WriterConfig
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.jsoup.Jsoup
 import org.junit.Test
 import java.io.*
 import java.net.SocketTimeoutException
@@ -246,6 +245,27 @@ class CheckWork {
     @Test
     fun test(){
         println(full_report().first)
+    }
+    @Test
+    fun count_modifications(){
+        val keys=arrayOf("Cerberus","Hydra","Alien","SharkBot","TeaBot","BankBot","AbereBot","Ermac","SpyNote","XLoader","Harly","Sova","Joker","Octo","PixStealer","GodFather","Dracarys","Wroba","BrasDex","IRATA","AgentSmith","Metasploit")
+        val modifications=keys.associateWith { key -> get_hashes_malware("tag=$key") }
+        val analyze=JsonObject()
+        val json=Json.parse(kotlin.runCatching { FileReader(report).readText() }.getOrDefault("[]")).asArray()
+        modifications.forEach { (k, v) ->
+            val r=JsonObject()
+            var al=0
+            var vt=0
+            var count=0
+            json.filter { json->v.contains(json.asObject()["hash"].asString()) }.forEach { json->
+                al+=if(json.asObject()["a"].asBoolean()) 1 else 0
+                vt+=if(json.asObject()["v"].asBoolean()) 1 else 0
+                count++
+            }
+            r.add("a",al).add("v",vt).add("count",count).add("percent","${(if(count>0) al*100/count.toDouble() else 0.0).format(2)}%")
+            analyze.add(k,r)
+        }
+        println(analyze.toString(WriterConfig.PRETTY_PRINT))
     }
     /*
     @Test
